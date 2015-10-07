@@ -1,4 +1,4 @@
-FROM mattf/storm-base
+FROM arrawatia/storm-base
 
 MAINTAINER Matthew Farrellee <matt@cs.wisc.edu>
 

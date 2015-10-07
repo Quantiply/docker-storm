@@ -1,11 +1,16 @@
-FROM fedora:latest
+FROM openshift/base-centos7
 
-MAINTAINER Matthew Farrellee <matt@cs.wisc.edu>
+MAINTAINER Sumit Arrawatia <sumit@quantiply.com>
 
-RUN yum update -y && yum install -y java tar
+RUN yum update -y && yum install -y tar wget java-1.8.0-openjdk-headless maven ; yum clean all -y
 
-RUN curl -s http://archive.apache.org/dist/storm/apache-storm-0.9.3/apache-storm-0.9.3.tar.gz | \
-      tar zxf - -C /opt && \
-      mv /opt/apache-storm-0.9.3 /opt/apache-storm
+
+RUN cd /tmp && \
+    git clone https://www.github.com/arrawatia/storm && \
+    cd storm && git checkout 0.9.3-branch-atdixon && mvn install -DskipTests && \
+    cd storm-dist/binary && mvn clean install -Pdist -Dgpg.skip && \
+    tar zxf /tmp/storm/storm-dist/binary/target/apache-storm-0.9.3.atdixon.tar.gz -C /opt && \
+    mv /opt/apache-storm-0.9.3.atdixon /opt/apache-storm && \
+    rm -rf /tmp/storm && rm -rf ~/.m2
 
 ADD configure.sh /
