@@ -1,4 +1,4 @@
-FROM arrawatia/storm-base
+FROM quantezza/storm-base
 
 MAINTAINER Matthew Farrellee <matt@cs.wisc.edu>
 
